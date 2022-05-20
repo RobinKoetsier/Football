@@ -1,8 +1,9 @@
 library(devtools)
 library(roxygen2)
-
-create("themes")
-setwd("./packages/themes")
+getwd()
+setwd("./packages/")
+devtools::create("footballFunctions")
+setwd("footballFunctions")
 devtools::document()
-devtools::install_github('RobinKoetsier/xRank/themes')
+#devtools::install_github('RobinKoetsier/xRank/themes')
 library(themes)
