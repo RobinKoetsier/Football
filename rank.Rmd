@@ -246,7 +246,7 @@ div(class = "standings",
 
 ---
 
-### Tables
+### Goals
 
 ```{r table2, echo=FALSE, message=FALSE, warning=FALSE}
 players <- readxl::read_excel("Export_TDL_NED_2122.xlsx", 
@@ -359,9 +359,85 @@ reactable(players,
 
 ```
 
+### Assists
 
+```{r table3pec, echo=FALSE, message=FALSE, warning=FALSE}
 
-```{r ref.label="table", eval=FALSE,echo=FALSE}
+players_two <- readxl::read_excel("Export_TDL_NED_2122.xlsx", 
+                              sheet = "Player xG") %>%
+  select(name,playername,Minutes_played,Assists,xG_assisted,xA.90,Shots_assisted)%>%
+  arrange(-Assists)
+
+ reactable(players_two,
+              width = 700,
+              searchable = TRUE,
+              columns = list(
+                name = colDef(minWidth = 40,
+                              name = "",
+                              cell = function(value) {
+                                img_src <- knitr::image_uri(sprintf("~/Documents/ScraperWhoScored/TDLXG/Clubs/%s.png", value))
+                                image <- img(src = img_src, height = "22px", alt = value)
+                                tagList(
+                                  div(style = list(display = "inline-block", width = "40px"), image)
+                                )
+                              }),
+                playername = colDef(
+                  align="left"
+                ),
+                Minutes_played = colDef(
+                  name = "Minutes",
+                  maxWidth = 70,
+                  format = colFormat(digits = 0),
+                  style = function(value) {
+                    normalized <- (value - min(players_two$Minutes_played)) / (max(players_two$Minutes_played) - min(players_two$Minutes_played))
+                    color <- knockout_pct_color(normalized)
+                    
+                    # div(style = list(background = color), value)
+                    list(background = color)
+                  }
+                ),
+                Assists = colDef(
+                  maxWidth = 70,
+                  format = colFormat(digits = 0),
+                  style = function(value) {
+                    normalized <- (value - min(players_two$Assists)) / (max(players_two$Assists) - min(players_two$Assists))
+                    color <- knockout_pct_color(normalized)
+                    
+                    # div(style = list(background = color), value)
+                    list(background = color)
+                  }),
+                xG_assisted = colDef(
+                  name = "xG Assisted",
+                  format = colFormat(digits = 2),
+                  maxWidth = 75,
+                  style = function(value) {
+                    normalized <- (value - min(players_two$xG_assisted)) / (max(players_two$xG_assisted) - min(players_two$xG_assisted))
+                    color <- knockout_pct_color(normalized)
+                    list(background = color)
+                  }),
+                xA.90 = colDef(
+                  name = "xA/90",
+                  maxWidth = 70,
+                  style = function(value) {
+                    normalized <- (value - min(players_two$xA.90)) / (max(players_two$xA.90) - min(players_two$xA.90))
+                    color <- knockout_pct_color(normalized)
+                    list(background = color)
+                  }),
+                Shots_assisted = colDef(
+                  name = "Shots Assisted",
+                  maxWidth = 75,
+                  format = colFormat(digits = 0),
+                  style = function(value) {
+                    normalized <- (value - min(players_two$Shots_assisted)) / (max(players_two$Shots_assisted) - min(players_two$Shots_assisted))
+                    color <- knockout_pct_color(normalized)
+                    list(background = color)
+                  })),
+              defaultColDef = colDef(
+                format = colFormat(digits = 2),
+                align="center",
+                
+              )
+    )
 ```
 
 ```{r,echo=FALSE}
