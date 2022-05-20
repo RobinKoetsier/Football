@@ -23,6 +23,16 @@ theme_twitter <-  function(){
         strip.text = element_text(colour = 'black'))
 }
 
+
+#' A Twitter Theme
+#'
+#' This theme is for Twitter
+#' @param love 
+#' @keywords twitter
+#' @export
+#' @examples
+#' use theme() afterwards
+
 theme_twitter_pitch <-  function(){
   theme(plot.background = element_rect(fill="#120E41", colour="#120E41"),
         panel.background = element_rect(fill="#120E41", colour="#120E41"),
