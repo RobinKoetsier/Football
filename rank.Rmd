@@ -1,5 +1,6 @@
 ---
 title: "xRank"
+
 output:
   html_document: default
   pdf_document: default
@@ -52,7 +53,9 @@ df3 <- rbind(df1,df2) %>% arrange(Team,as.Date(date,format="%d-%m-%Y")) %>%
     summarise(form = list((xG_diff)),
               date=list(date))
 ```
+##  {.tabset}
 
+### xRank
 ```{r table, echo=FALSE, message=FALSE, warning=FALSE}
 orange_pal <- function(x){
   rgb(colorRamp(c("green","white", "red"))(x), maxColorValue = 255)}
@@ -158,7 +161,7 @@ tbl <-   reactable(
         Logo = colDef(minWidth = 40,
                       name = "",
                       cell = function(value) {
-                        img_src <- knitr::image_uri(sprintf("Clubs/%s.png", value))
+                        img_src <- knitr::image_uri(sprintf("~/Documents/ScraperWhoScored/TDLXG/Clubs/%s.png", value))
                         image <- img(src = img_src, height = "22px", alt = value)
                         tagList(
                           div(style = list(display = "inline-block", width = "40px"), image)
@@ -242,6 +245,121 @@ div(class = "standings",
 ```
 
 ---
+
+### Tables
+
+```{r table2, echo=FALSE, message=FALSE, warning=FALSE}
+players <- readxl::read_excel("Export_TDL_NED_2122.xlsx", 
+                           sheet = "Player xG") %>%
+  select(name,playername,Minutes_played, Goals, NP_Goals, xG, NPxG, xG.90, NPxG.90, NP_Shots) 
+format_pct <- function(value) {
+  if (value == 0) "  \u2013 "    # en dash for 0%
+  else if (value == 1) "\u2713"  # checkmark for 100%
+  else if (value < 0.01) " <1%"
+  else if (value > 0.99) ">99%"
+  else formatC(paste0(round(value * 100), "%"), width = 4)
+}
+
+
+group_column <- function(class = NULL, ...) {
+  colDef(cell = format_pct, maxWidth = 70, align = "center", class = paste("cell number", class), ...)
+}
+knockout_pct_color <- make_color_pal(c("#ffffff", "#f2fbd2", "#c9ecb4", "#93d3ab", "#35b0ab"), bias = 2)
+
+reactable(players,
+              width = 750,
+              searchable = TRUE,
+              columns = list(
+                name = colDef(minWidth = 40,
+                              name = "",
+                              cell = function(value) {
+                                img_src <- knitr::image_uri(sprintf("~/Documents/ScraperWhoScored/TDLXG/Clubs/%s.png", value))
+                                image <- img(src = img_src, height = "22px", alt = value)
+                                tagList(
+                                  div(style = list(display = "inline-block", width = "40px"), image)
+                                )
+                              }),
+                playername = colDef(
+                  align="left"
+                ),
+                Minutes_played = colDef(
+                 name = "Minutes",
+                 maxWidth = 70,
+                 format = colFormat(digits = 0),
+                 style = function(value) {
+                   normalized <- (value - min(players$Minutes_played)) / (max(players$Minutes_played) - min(players$Minutes_played))
+                   color <- knockout_pct_color(normalized)
+                   
+                   # div(style = list(background = color), value)
+                   list(background = color)
+                 }
+                ),
+                Goals = colDef(
+                  maxWidth = 55,
+                  format = colFormat(digits = 0),
+                  style = function(value) {
+                  normalized <- (value - min(players$Goals)) / (max(players$Goals) - min(players$Goals))
+                  color <- knockout_pct_color(normalized)
+                  
+                 # div(style = list(background = color), value)
+                  list(background = color)
+                }),
+                NP_Goals = colDef(
+                  name = "NP Goals",
+                  format = colFormat(digits = 0),
+                  maxWidth = 55,
+                  style = function(value) {
+                  normalized <- (value - min(players$Goals)) / (max(players$Goals) - min(players$Goals))
+                  color <- knockout_pct_color(normalized)
+                  list(background = color)
+                }),
+                xG = colDef(
+                  maxWidth = 55,
+                  style = function(value) {
+                    normalized <- (value - min(players$xG)) / (max(players$xG) - min(players$xG))
+                    color <- knockout_pct_color(normalized)
+                    list(background = color)
+                  }),
+                NPxG = colDef(
+                  maxWidth = 55,
+                  style = function(value) {
+                    normalized <- (value - min(players$NPxG)) / (max(players$NPxG) - min(players$NPxG))
+                    color <- knockout_pct_color(normalized)
+                    list(background = color)
+                  }),
+                xG.90 = colDef(
+                  maxWidth = 55,
+                  style = function(value) {
+                    normalized <- (value - min(players$xG.90)) / (max(players$xG.90) - min(players$xG.90))
+                    color <- knockout_pct_color(normalized)
+                    list(background = color)
+                  }),
+                NPxG.90 = colDef(
+                  maxWidth = 55,
+                  style = function(value) {
+                    normalized <- (value - min(players$NPxG.90)) / (max(players$NPxG.90) - min(players$NPxG.90))
+                    color <- knockout_pct_color(normalized)
+                    list(background = color)
+                  }),
+                NP_Shots = colDef(
+                  format = colFormat(digits = 0),
+                  name = "NP Shots",
+                  maxWidth = 55,
+                  style = function(value) {
+                    normalized <- (value - min(players$NP_Shots)) / (max(players$NP_Shots) - min(players$NP_Shots))
+                    color <- knockout_pct_color(normalized)
+                    list(background = color)
+                  })),
+              defaultColDef = colDef(
+                format = colFormat(digits = 2),
+                align="center",
+                
+              )
+              )
+
+```
+
+
 
 ```{r ref.label="table", eval=FALSE,echo=FALSE}
 ```
