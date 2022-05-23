@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r prep, echo=FALSE, message=FALSE, warning=FALSE}
-
+library(downloadthis)
 library(reactable)
 library(htmltools)
 library(tibble)
@@ -136,6 +136,8 @@ xRank <- readxl::read_excel("Export_TDL_NED_2122.xlsx",
 
 xRank<- add_column(xRank, Logo = xRank$Team, .after = 1) 
 xRank<- add_column(xRank, Form = NA, .after = 15) 
+
+
 tbl <-   reactable(
       xRank,
       showSortable = TRUE,
@@ -247,6 +249,16 @@ div(class = "standings",
   tbl,
   "Based on simulating every shot in every match"
 )
+
+xRank %>%
+  download_this(
+    output_name = "xRank_Eredivisie",
+    output_extension = ".xlsx",
+    button_label = "Download table as xlsx",
+    button_type = "default",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
 ```
 
 ---
