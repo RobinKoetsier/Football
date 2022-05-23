@@ -1,6 +1,6 @@
 rmarkdown::render("rank.Rmd", "html_document")
 system("ls")
-system("mv  ~/Documents/R_with_git/Football/rank.html ~/Documents/github/robinkoetsier.github.io/")
+#system("mv  ~/Documents/R_with_git/Football/rank.html ~/Documents/github/robinkoetsier.github.io/")
 system("cp -R  ~/Documents/R_with_git/Football/rank.html ~/Documents/github/robinkoetsier.github.io/")
 setwd('~/Documents/github/robinkoetsier.github.io/')
 system('git add .')

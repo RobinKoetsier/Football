@@ -6,14 +6,17 @@ output:
   pdf_document: default
 permalink: rank/ 
 resource_files: '.'
+
 ---
 
+[Find older seasons here](https://shinynew.robinkoetsier.nl/eredivisie)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r prep, echo=FALSE, message=FALSE, warning=FALSE}
+
 library(reactable)
 library(htmltools)
 library(tibble)
@@ -21,6 +24,8 @@ library(forcats)
 library(tidyverse)
 library(sparkline)
 library(dataui)
+library(knitr)
+knit_hooks$set(optipng = hook_optipng)
 
 df1 <- readxl::read_excel("Export_TDL_NED_2122.xlsx", 
                    sheet = "Wedstrijden") %>%
@@ -273,13 +278,14 @@ reactable(players,
                 name = colDef(minWidth = 40,
                               name = "",
                               cell = function(value) {
-                                img_src <- knitr::image_uri(sprintf("~/Documents/ScraperWhoScored/TDLXG/Clubs/%s.png", value))
+                                img_src <- knitr::image_uri(sprintf("~/Documents/ScraperWhoScored/TDLXG/resized/%s.png", value))
                                 image <- img(src = img_src, height = "22px", alt = value)
                                 tagList(
                                   div(style = list(display = "inline-block", width = "40px"), image)
                                 )
                               }),
                 playername = colDef(
+                  name="",
                   align="left"
                 ),
                 Minutes_played = colDef(
@@ -328,6 +334,7 @@ reactable(players,
                     list(background = color)
                   }),
                 xG.90 = colDef(
+                  name = "xG/90",
                   maxWidth = 55,
                   style = function(value) {
                     normalized <- (value - min(players$xG.90)) / (max(players$xG.90) - min(players$xG.90))
@@ -335,6 +342,7 @@ reactable(players,
                     list(background = color)
                   }),
                 NPxG.90 = colDef(
+                  name = "NPxG/90",
                   maxWidth = 55,
                   style = function(value) {
                     normalized <- (value - min(players$NPxG.90)) / (max(players$NPxG.90) - min(players$NPxG.90))
@@ -375,13 +383,14 @@ players_two <- readxl::read_excel("Export_TDL_NED_2122.xlsx",
                 name = colDef(minWidth = 40,
                               name = "",
                               cell = function(value) {
-                                img_src <- knitr::image_uri(sprintf("~/Documents/ScraperWhoScored/TDLXG/Clubs/%s.png", value))
+                                img_src <- knitr::image_uri(sprintf("~/Documents/ScraperWhoScored/TDLXG/resized/%s.png", value))
                                 image <- img(src = img_src, height = "22px", alt = value)
                                 tagList(
                                   div(style = list(display = "inline-block", width = "40px"), image)
                                 )
                               }),
                 playername = colDef(
+                  name="",
                   align="left"
                 ),
                 Minutes_played = colDef(
