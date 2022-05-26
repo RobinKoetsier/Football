@@ -61,7 +61,7 @@ df3 <- rbind(df1,df2) %>% arrange(Team,as.Date(date,format="%d-%m-%Y")) %>%
 ##  {.tabset}
 
 ### xRank
-```{r table, echo=FALSE, message=FALSE, warning=FALSE}
+```{r table,out.width='100%', fig.height=4, echo=FALSE, message=FALSE, warning=FALSE}
 orange_pal <- function(x){
   rgb(colorRamp(c("green","white", "red"))(x), maxColorValue = 255)}
 
@@ -265,7 +265,7 @@ xRank %>%
 
 ### Goals
 
-```{r table2, echo=FALSE, message=FALSE, warning=FALSE}
+```{r table2, out.width='100%',echo=FALSE, message=FALSE, warning=FALSE}
 players <- readxl::read_excel("Export_TDL_NED_2122.xlsx", 
                            sheet = "Player xG") %>%
   select(name,playername,Minutes_played, Goals, NP_Goals, xG, NPxG, xG.90, NPxG.90, NP_Shots) 
@@ -381,7 +381,7 @@ reactable(players,
 
 ### Assists
 
-```{r table3pec, echo=FALSE, message=FALSE, warning=FALSE}
+```{r table3pec,out.width='50%', echo=FALSE, message=FALSE, warning=FALSE}
 
 players_two <- readxl::read_excel("Export_TDL_NED_2122.xlsx", 
                               sheet = "Player xG") %>%
