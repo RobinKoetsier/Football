@@ -1,6 +1,6 @@
 library(tidyverse)
 library(data.table)
-
+d
 load('~/Documents/ScraperWhoScored/TDLXG/teamcodes.rda') 
 filenames <- list.files("~/Documents/ScraperWhoScored/Eredivisie/21:22/Events", pattern=glob2rx("*.csv"), full.names=TRUE)
 data <- rbindlist(lapply(filenames,fread,colClasses=c(PlayerId="numeric",
