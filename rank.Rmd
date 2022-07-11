@@ -377,6 +377,16 @@ reactable(players,
               )
               )
 
+players %>%
+  download_this(
+    output_name = "players_goals_Eredivisie",
+    output_extension = ".xlsx",
+    button_label = "Download table as xlsx",
+    button_type = "default",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+
 ```
 
 ### Assists
@@ -459,11 +469,26 @@ players_two <- readxl::read_excel("Export_TDL_NED_2122.xlsx",
                 
               )
     )
+ 
+players_two %>%
+  download_this(
+    output_name = "players_assists_Eredivisie",
+    output_extension = ".xlsx",
+    button_label = "Download table as xlsx",
+    button_type = "default",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
 ```
 
 ```{r,echo=FALSE}
 tags$link(href = "https://fonts.googleapis.com/css?family=Karla:400,700|Fira+Mono&display=fallback", rel = "stylesheet")
 ```
+
+### Info
+
+If you want the shot maps, go to my Twitter. Every match played is there with the teams names so it should be easy to find. 
+If you want to buy me a coffee/beer, you can do so at 
 
 ```{css,echo=FALSE}
 .standings {
