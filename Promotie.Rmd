@@ -1,0 +1,99 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+Kampioenen
+```{r}
+library(readxl)
+library(tidyverse)
+kampioenen <- read_excel("kampioenen.xlsx", 
+    sheet = "Sheet2") %>% group_by(club) %>% 
+  mutate(first=min(start)) %>% mutate(length = end-start) %>%
+  ungroup()
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+```{r}
+ggplot(kampioenen) + 
+  geom_segment(aes(x=start,y=reorder(club,-first),yend=club,xend=end),colour="green4",size=3) +
+  labs(x="Jaren Eredivisie",
+       y="",
+       title="Promovendi na kampioenschap Eerste Divisie",
+       subtitle = "Alleen kampioenen 21e eeuw")+
+  theme_minimal()+
+  theme(text = element_text(family="Spartan-Light"),
+        axis.text =  element_text(family="Spartan-Medium"))
+  
+```
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+nacompetitie
+```{r}
+
+kampioenen <- read_excel("kampioenen.xlsx", 
+    sheet = "Sheet4") %>% group_by(club) %>% 
+  mutate(first=min(start)) %>% mutate(length = end-start) %>%
+  ungroup()
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+```{r}
+ggplot(kampioenen) + 
+  geom_segment(aes(x=start,y=reorder(club,-first),yend=club,xend=end),colour="green4",size=3) +
+  labs(x="Jaren Eredivisie",
+       y="",
+       title="Promovendi via nacompetitie/play-offs Eerste Divisie")+
+  theme_minimal()+
+  theme(text = element_text(family="Spartan-Light"),
+        axis.text =  element_text(family="Spartan-Medium"))
+  
+```
+
+```{r}
+ggplot(kampioenen,aes(x=length)) + geom_bar(aes(fill=way),identity="stack") +
+  theme_minimal() + 
+scale_fill_manual(values=c("green3","#007523"))+
+  labs(x="aantal seizoenen",
+       y="aantal",
+       title="Aantal seizoenen Eredivisie promovendi",
+       fill="") +
+  annotate("text",x=12,y=3.3,label="ADO",family="Spartan-Light",size=3) +
+   annotate(
+    geom = "curve", x = 12, y = 3, xend = 13, yend = 1, 
+    curvature = -.3, arrow = arrow(length = unit(2, "mm"))
+  ) +
+   annotate("text",x=20,y=3.3,label="FC Groningen",family="Spartan-Light",size=3) +
+   annotate(
+    geom = "curve", x = 20, y = 3, xend = 21, yend = 1, 
+    curvature = -.3, arrow = arrow(length = unit(2, "mm"))
+  ) + scale_y_continuous(breaks=c(1,3,5,7,9,11,13,15))+
+  theme(text = element_text(family="Spartan-Light"))
+  
+```
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+```{r}
+ggplot(kampioenen %>% filter(plek !=1),aes(x=plek)) + geom_bar(fill="#007523",identity="stack") +
+  theme_minimal() + 
+
+  labs(x="Eindpositie",
+       y="aantal",
+       title="Aantal promovendi per eindpositie",
+       fill="")+
+  theme(text = element_text(family="Spartan-Light"))
+```
+```{r}
+ggplot(df,aes(pts)) + geom_bar(fill="#007523") +
+  
+  labs(x="Aantal punten",
+       y="Aantal keer",
+       title = "Aantal punten nummer 16 Eredivisie")+
+  
+  theme_minimal() +
+  theme(text = element_text(family="Spartan-Light"))
+```
+

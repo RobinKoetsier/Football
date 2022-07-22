@@ -1,9 +1,9 @@
 library(tidyverse)
 library(data.table)
-d
+
 load('~/Documents/ScraperWhoScored/TDLXG/teamcodes.rda') 
 filenames <- list.files("~/Documents/ScraperWhoScored/Eredivisie/21:22/Events", pattern=glob2rx("*.csv"), full.names=TRUE)
-data <- rbindlist(lapply(filenames,fread,colClasses=c(PlayerId="numeric",
+all_data <- rbindlist(lapply(filenames,fread,colClasses=c(PlayerId="numeric",
                                                       TeamId = "numeric",
                                                       minute = "numeric",
                                                       second = "numeric",
@@ -21,5 +21,6 @@ data <- rbindlist(lapply(filenames,fread,colClasses=c(PlayerId="numeric",
               mutate(TeamId=as.numeric(X1)) %>%
               select(TeamId,X2) ,by="TeamId") %>%
   mutate(TeamId = X2) %>% unique()
+
 
 
